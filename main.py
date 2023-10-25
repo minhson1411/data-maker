@@ -1,27 +1,27 @@
 import os
-
 import random
-
-import random
-
-def generate_biased_integer():
-    values = [1, 2, 2, 3, 4]
-    return random.choices(values)[0]
-
+from datetime import datetime, timedelta
 
 def make_commit(days: int):
     if days < 1:
         return os.system("git push")
     else:
-        dates = f'{days} days ago'
+        # Sinh ngày ngẫu nhiên từ 1 đến 4
+        random_days = random.choice([1, 2, 2, 3, 4])
+        dates = f'{random_days} days ago'
 
         with open('data.txt', 'a') as file:
             file.write(f'{dates}\n')
 
-        #Staging
+        # Staging
         os.system('git add data.txt')
-        #Commit
-        os.system('git commit --date="'+dates+'" -m "first commit"')
+        # Commit
+        os.system('git commit --date="'+dates+'" -m "commit on {dates}"')
 
-        return days * make_commit(days - generate_biased_integer())
+        # Chọn cách nhau giữa các commit (chủ yếu là 2 ngày, cùng lắm là 4 ngày)
+        spacing_days = random.choice([2, 2, 4])
+        
+        # Sử dụng đệ quy để thực hiện commit ở ngày tiếp theo
+        return days * make_commit(days - spacing_days)
+
 make_commit(700)
